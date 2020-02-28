@@ -1,0 +1,39 @@
+#wrapper {
+    text-align: center;
+}
+h1 {
+    font-family: 'Bitter' ;
+}
+
+.quiz-container {
+    width: 600px;
+    background-color: white;
+    border: 1px solid black;
+    font-family: 'Bitter' ;
+    box-shadow: 0 0 10px 1px;
+    padding: 20px;
+
+}
+body {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+.btn-grid {
+    display:grid;
+    grid-template-columns: repeat(1, auto);
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.btn {
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: cadetblue;
+    padding: 10px;
+}
