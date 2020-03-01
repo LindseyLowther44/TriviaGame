@@ -1,101 +1,179 @@
-const myQuestions = [
-        {     
+$(document).ready(function(){
+var myQuestions = [{     
             question: "What does Michael Scott’s mug say?",
-            answers: {
-                a: "Toby is the worst!" ,
-                b: "Worlds Best Boss",
-                c: "The Office",
-                d: "I love Toby!"
-        },
-            correctAnswer: "b"
-        },
-        {
+            answers: ["Toby is the worst!" ,"Worlds Best Boss","The Office","I love Toby!"],
+            correctAnswer: "Worlds Best Boss",
+            photo: "assets/images/michael.gif"
+        },{
             question: "What is the name of Jim and Pams child?",
-            answers: {
-                a: "Michael",
-                b: "Astrid",
-                c: "Phoebe",
-                d: "Cici"
-        },
-            correctAnswer: "d"
-        },
-        {
+            answers: ["Michael","Astrid","Phoebe","Cici"],
+            correctAnswer: "Cici",
+            photo: "assets/images/cici.gif"
+        },{
             question: "Name Ryan’s online social networking site?",
-            answers: {
-                a: "He never made one",
-                b: "MrEntreprenuer.com",
-                c: "WUPHF.com",
-                d: "Isuck.com"
-        },
-            correctAnswer: "c"
-        },
-        {
+            answers: ["He never made one","MrEntreprenuer.com","WUPHF.com","Isuck.com"],
+            correctAnswer: "WUPHF.com",
+            photo: "assets/images/wuphf.jpg"
+        },{
             question: "Who attended anger management in season 3?",
-            answers: {
-                a: "Dwight",
-                b: "Andy",
-                c: "Kevin",
-                d: "Kelly"
-            },
-            correctAnswer: "b"
-        },
-        {
+            answers: ["Dwight","Andy","Kevin","Kelly"],
+            correctAnswer: "Andy",
+            photo: "assets/images/giphy.gif"
+        },{
             question: "What is Toby the Thief of?",
-            answers: {
-                a: "Happiness",
-                b: "Joy",
-                c: "Life",
-                d: "Everything"
-            },
-            correctAnswer: "b"
-        },
-        {
+            answers: ["Happiness","Joy","Life","Everything"],
+            correctAnswer: "Joy",
+            photo: "assets/images/joy.gif"
+        },{
             question: "Where did Jim propose to Pam?",
-            answers: {
-                a: "The Office",
-                b: "Poor Richards",
-                c: "Outside of a Gas Station",
-                d: "In front of their home."
-            },
-            correctAnswer: "c" 
-        },
-        {
+            answers: ["The Office","Poor Richards","Outside of a Gas Station","In front of their home."],
+            correctAnswer: "Outside of a Gas Station",
+            photo: "assets/images/JPropose.gif"
+        },{
             question: "Where did Holly & Michael move to?",
-                answers: {
-                    a: "Colorado",
-                    b: "California",
-                    c: "Neither, They stayed in Scranton.",
-                    d: "Vegas"
-                },
-                correctAnswer: "a"
-        },
-        {
+            answers: ["Colorado","California","Neither, They stayed in Scranton.", "Vegas"],
+            correctAnswer: "Colorado",
+            photo: "assets/images/HollyandMike.gif"
+        },{
             question: "Who does Jim impersonate one day at the office for 11 dollars?",
-            answers: {
-                a: "Ryan",
-                b: "Michael",
-                c: "Stanley",
-                d: "Dwight"
-            },
-            correctAnswer: "d"
-        },
-        {
+            answers: ["Ryan","Michael","Stanley","Dwight"],
+            correctAnswer: "Dwight",
+            photo: "assets/images/jimdwight.gif"
+        },{
             question: "What is Micheal proud of in his new condo?",
-            answers: {
-                a: "Jan",
-                b: "A very small Plasma screen TV",
-                c: "The Windows",
-                d: "The Webcam"
+            answers: ["Jan","A very small Plasma screen TV","The Windows","The Webcam"],
+            correctAnswer: "A very small Plasma screen TV",
+            photo: "assets/images/michaelEmbarassed.gif"
+        },{
+            question: "What gift did Michael give Toby as a gift on his last day of work?",
+            answers: ["A Rock","A slap in the face","A stick of broccoli","nothing"],
+            correctAnswer: "A Rock",
+            photo: "assets/images/pvvjk943p1g21.png"
+        }];
 
-            },
-            correctAnswer: "b"
-        }    
-];
+let time = 10;
+let currentQuestion = 0;
+let score = 0;
+let lost = 0;
+let timer;
+
+const messages = {
+    correct: "Yep, Thats what she said!",
+    incorrect: "NOOOOOOOOOOOOO!",
+    OutofTime: "You are out of time, my Friend!",
+    FinishedGame: "You are a champion, you have finished.. "
+}
+
+$("#game").hide();
+$("#timeLeft").hide();
 
 
-var score = 0;
+$('#start-btn').on('click', function(){
+    $('#start-btn').hide();
+    $('#game').show();
+    $("#timeLeft").show();
+});
+
+function getNextQuestion () {
+    
+    var questionRunout = (myQuestions.length -1) === currentQuestion;
+    var picChoice = myQuestions[currentQuestion].photo;
+
+    if (questionRunout) {
+        $("#game").text(messages[3]);
+        $("#timeLeft").hide();
+        getresults();
+    } else {
+        currentQuestion++;
+        loadQuestion();
+        $("#timeLeft").html("You Have " + time + " seconds remaining");
+    }
+}
+
+function timeRunout () {
+    clearInterval(timer);
+    lost++;
+    getNextQuestion();
+}
+
+function countDown () {
+    time--;
+    $("#timeLeft").html("You have " + time + " seconds remaining");
+    if (time === 0)  {
+        timeRunout ();
+    }
+
+}
+function loadQuestion() {
+    time = 10;
+    $("#timeLeft").html("You have " + time + " seconds remaining");
+    timer = setInterval(countDown, 1000);
+    const question = myQuestions[currentQuestion].question;
+    const answers = myQuestions[currentQuestion].answers;
+    $("#game").html(`
+        <h3>${question}</h3>
+    ${loadAnswers(answers)}
+    `);
+}
+
+function loadAnswers(answers) {
+    let result = '';
+    for (let i = 0; i < answers.length; i++) {
+        result += `<button class="answers" data-answer="${answers[i]}">${answers[i]}</button>`
+    }
+    return result;
+}
+
+$(document).on('click', '.answers', function(){
+    clearInterval(timer);
+    var userChoice = $(this).attr("data-answer");
+    var correctChoice = myQuestions[currentQuestion].correctAnswer;
+    var picChoice = myQuestions[currentQuestion].photo;
+    if (correctChoice === userChoice){
+        score++; 
+        $("#image-holder").html("<img src=" + picChoice + ">"); 
+        getNextQuestion();
+    } else {
+        lost++;
+        getNextQuestion();
+        
+    }
+});
 
 
-function showQuestions ()
+loadQuestion();
 
+function questionResult () {
+    clearInterval(timer);
+    time=3;
+    var correctResults = `
+    <h3> "Yep, Thats what she said!"</h3>
+    "<img src=" + ${picChoice} + ">"
+    `
+    $("#timeLeft").show();
+    getNextQuestion();
+}
 
+function getresults () {
+    var results = `
+    <h3>You got ${score} questions right</h3>
+    <h3>You got ${lost}  questions wrong</h3>
+    <h3>Total questions ${myQuestions.length} answered</h3>
+    <button class="reset">Reset Game</button>
+    `;
+    $('#game').html(results);
+    $('.reset').on('click', function(){
+        resetGame()
+    })
+}
+
+function resetGame () {
+    $(picChoice).hide();
+    currentQuestion = 0;
+    score = 0;
+    lost = 0;
+    loadQuestion();
+    $("#timeLeft").show();
+}
+
+});

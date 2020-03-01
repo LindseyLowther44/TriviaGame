@@ -3,6 +3,9 @@
 }
 h1 {
     font-family: 'Bitter' ;
+    font-size: 4rem;
+    color: white;
+    text-shadow: yellow 2px;
 }
 
 .quiz-container {
@@ -15,6 +18,9 @@ h1 {
 
 }
 body {
+    background-image: url("https://media.npr.org/assets/news/2010/01/12/nbcoffice2_wide-37d84499e597cec4857fc4ba8d0bce2373f7e83d-s700-c85.jpg");
+    background-attachment: fixed;
+    height: 100%;
     padding: 0;
     margin: 0;
     display: flex;
@@ -30,10 +36,24 @@ body {
     margin: 20px 0;
 }
 
-.btn {
+.answers {
     border: 1px solid;
     border-radius: 10px;
-    padding: 5px 10px;
+    padding: 10px 10px;
+    cursor: pointer;
+    margin: 10px;
+    font-size: 1.5rem;
     background-color: cadetblue;
-    padding: 10px;
 }
+
+.answers:hover{
+    border-color: yellow;
+}
+
+.start-btn, .next-btn, .reset {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    background-color: cadetblue;
+}
+
